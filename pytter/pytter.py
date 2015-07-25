@@ -31,7 +31,7 @@ class Pytter:
         else:
             self.html_class = html_class
 
-        self.parse_all()
+        self.parse()
 
     def set_html_class(self, html_class):
         """
@@ -56,20 +56,17 @@ class Pytter:
     def parse_url(self):
         url_regex = '(^|\s)((f|ht)tps?://([^ \t\r\n]*[^ \t\r\n\)*_,\.]))'
         match = re.findall(url_regex, self.text)
-        d = {
-            'url': None,
-            'text': None,
-            'html': None
-        }
 
         if match:
             for m in match:
                 link = '<a href="{url}" target="_blank" class="{tweetclass}">{text}</a>' \
                     .format(url=m[1], text=m[1], tweetclass=self.html_class['url'])
 
-                d['url'] = m[1]
-                d['text'] = m[1]
-                d['html'] = link
+                d = {
+                    'url': m[1],
+                    'text': m[1],
+                    'html': link
+                }
 
                 self.urls.append(d)
                 self.formated_tweet = self.formated_tweet.replace(m[1], link)
@@ -77,12 +74,6 @@ class Pytter:
     def parse_users(self):
         user_regex = '(\B@([a-zA-Z0-9_]+))'
         match = re.findall(user_regex, self.text)
-        d = {
-            'user': None,
-            'user_formated': None,
-            'url': None,
-            'html': None
-        }
 
         if match:
             for m in match:
@@ -90,10 +81,12 @@ class Pytter:
                 link = '<a href="{base_url}{user_only}" target="_blank" class="{tweetclass}">{text}</a>' \
                     .format(base_url=base_url, user_only=m[1], text=m[0], tweetclass=self.html_class['user'])
 
-                d['user'] = m[0]
-                d['user_formated'] = m[1]
-                d['url'] = base_url + m[1]
-                d['html'] = link
+                d = {
+                    'user': m[0],
+                    'user_formated': m[1],
+                    'url': base_url + m[1],
+                    'html': link
+                }
 
                 self.formated_tweet = self.formated_tweet.replace(m[0], link)
                 self.users.append(d)
@@ -101,12 +94,6 @@ class Pytter:
     def parse_hashtags(self):
         hashtag_regex = '(\B#([á-úÁ-Úä-üÄ-Üa-zA-Z0-9_]+))'
         match = re.findall(hashtag_regex, self.text)
-        d = {
-            'text': None,
-            'hashtag': None,
-            'url': None,
-            'html': None
-        }
 
         if match:
             for m in match:
@@ -114,15 +101,17 @@ class Pytter:
                 link = '<a href="{base_url}{hashtag_text}" target="_blank" class="{tweetclass}">{hashtag}</a>' \
                     .format(base_url=base_url, hashtag_text=m[1], hashtag=m[0], tweetclass=self.html_class['hashtag'])
 
-                d['text'] = m[1]
-                d['hashtag'] = m[0]
-                d['url'] = base_url + m[1]
-                d['html'] = link
+                d = {
+                    'text': m[1],
+                    'hashtag': m[0],
+                    'url': base_url + m[1],
+                    'html': link
+                }
 
                 self.formated_tweet = self.formated_tweet.replace(m[0], link)
                 self.hashtags.append(d)
 
-    def parse_all(self):
+    def parse(self):
         self.parse_hashtags()
         self.parse_users()
         self.parse_url()
