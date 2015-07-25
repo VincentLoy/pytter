@@ -2,3 +2,6 @@
 __pycache__
 setup.cfg
 setup.py
+test
+MANIFEST
+dist
