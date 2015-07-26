@@ -84,6 +84,7 @@ There is two way to do it.
 >>> # You can also set custom class next your Pytter call
 >>> t = Pytter(text)
 >>> t.set_html_class(custom_classes)
+>>> t.parse()
 >>> t.get_html_classes()
 {'hashtag': 'my_hashtag_class', 'url': 'my_url_class', 'user': 'my_user_anchor_class'}
 ```
