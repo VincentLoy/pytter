@@ -13,20 +13,23 @@ from pytter import Pytter
 # print(p.hashtags)
 
 pp = pprint.PrettyPrinter()
+HTML_URL_FORMAT = '<a href="{url}" target="_blank" class="{html_class}">{text}</a>'
+
 
 class PytterTests(unittest.TestCase):
     def test_urls(self):
         t0 = Pytter('tweet url https://github.com/VincentLoy/pytter/blob/master/pytter/pytter.py, #url')
-        t1 = Pytter('tweet url https://github.com/VincentLoy/pytter/blob/master/pytter/pytter.py, http://google.com #url')
+        t1 = Pytter('tweet url https://github.com/VincentLoy/pytter/blob/master/pytter/pytter.py, '
+                    + 'http://google.com #url')
 
         self.assertEqual(t0.urls[0].get('url'), 'https://github.com/VincentLoy/pytter/blob/master/pytter/pytter.py')
         self.assertEqual(t1.urls[0].get('url'), 'https://github.com/VincentLoy/pytter/blob/master/pytter/pytter.py')
-        self.assertEqual(t1.urls[1].get('url'), 'http://google.com')
+        self.assertEqual(t1.urls[1].get('html'), HTML_URL_FORMAT.format(url='http://google.com',
+                                                                        text='http://google.com',
+                                                                        html_class=t1.get_html_classes().get('url')))
 
     def test_users(self):
         t0 = Pytter('this is a tweet for @nano @pastaws @xowap @CurtAirborne')
-
-        pp.pprint(t0.users)
 
         self.assertEqual(t0.users[0].get('user'), '@nano')
         self.assertEqual(t0.users[1].get('user_formated'), 'pastaws')
@@ -38,5 +41,16 @@ class PytterTests(unittest.TestCase):
 
         self.assertEqual(t0.hashtags[0].get('text'), 'hashtag')
         self.assertEqual(t0.hashtags[1].get('hashtag'), '#Pytter')
+
+    def test_getters(self):
+        text = 'this super tweet talk about #twitter @superplanet @frog http://duckduckgo.com'
+        t = Pytter(text)
+
+        self.assertEqual(t.get_text(), text)
+        self.assertEqual(t.get_hashtags()[0].get('text'), 'twitter')
+        self.assertEqual(t.get_urls()[0].get('url'), 'http://duckduckgo.com')
+        self.assertEqual(t.get_users()[0].get('user'), '@superplanet')
+
+
 if __name__ == '__main__':
     unittest.main()
