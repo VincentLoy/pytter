@@ -60,7 +60,7 @@
 'This is my super last <a href="https://twitter.com/hashtag/tweet" target="_blank" class="tweet_hashtag">#tweet</a> ! <a href="https://twitter.com/pastaws" target="_blank" class="tweet_user">@pastaws</a> <a href="https://twitter.com/twitter" target="_blank" class="tweet_user">@twitter</a> ! let\'s visit : <a href="http://duckduckgo.com" target="_blank" class="tweet_url">http://duckduckgo.com</a> !'
 ```
 
-#### You can also set the html/css classes you want to give for each king of anchor tags
+#### You can also set the html/css classes you want to give for each kind of anchor tags
 
 There is two way to do it.
 
