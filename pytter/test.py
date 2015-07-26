@@ -5,14 +5,8 @@
 # Vincent Loy <vincent.loy1@gmail.com>
 
 import unittest
-import pprint
 from pytter import Pytter
 
-# p = Pytter('i\'m a super #tweet about no more no sense #cool @pastaws')
-#
-# print(p.hashtags)
-
-pp = pprint.PrettyPrinter()
 HTML_URL_FORMAT = '<a href="{url}" target="_blank" class="{html_class}">{text}</a>'
 
 
