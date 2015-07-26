@@ -20,7 +20,7 @@ HASHTAG_REGEX = '(\B#([á-úÁ-Úä-üÄ-Üa-zA-Z0-9_]+))'
 class Pytter:
     def __init__(self, tweet, html_class=None):
         self.text = tweet
-        self.formated_tweet = tweet
+        self.formated_tweet = None
         self.length = len(tweet)
         self.urls = []
         self.users = []
@@ -145,6 +145,7 @@ class Pytter:
     THE PARSE FUNCTION
     """
     def parse(self):
+        self.formated_tweet = self.text
         self.parse_hashtags()
         self.parse_users()
         self.parse_url()
