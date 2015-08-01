@@ -60,6 +60,7 @@ class Pytter:
     """
     PARSERS
     """
+
     def parse_url(self):
         match = re.findall(URL_REGEX, self.text)
 
@@ -68,12 +69,10 @@ class Pytter:
                 link = '<a href="{url}" target="_blank" class="{tweetclass}">{text}</a>' \
                     .format(url=m[1], text=m[1], tweetclass=self.html_class['url'])
 
-                d = {
+                self.urls.append({
                     'url': m[1],
                     'html': link
-                }
-
-                self.urls.append(d)
+                })
                 self.formated_tweet = self.formated_tweet.replace(m[1], link)
 
     def parse_users(self):
@@ -85,15 +84,13 @@ class Pytter:
                 link = '<a href="{base_url}{user_only}" target="_blank" class="{tweetclass}">{text}</a>' \
                     .format(base_url=base_url, user_only=m[1], text=m[0], tweetclass=self.html_class['user'])
 
-                d = {
+                self.formated_tweet = self.formated_tweet.replace(m[0], link)
+                self.users.append({
                     'user': m[0],
                     'user_formated': m[1],
                     'url': base_url + m[1],
                     'html': link
-                }
-
-                self.formated_tweet = self.formated_tweet.replace(m[0], link)
-                self.users.append(d)
+                })
 
     def parse_hashtags(self):
         match = re.findall(HASHTAG_REGEX, self.text)
@@ -104,31 +101,29 @@ class Pytter:
                 link = '<a href="{base_url}{hashtag_text}" target="_blank" class="{tweetclass}">{hashtag}</a>' \
                     .format(base_url=base_url, hashtag_text=m[1], hashtag=m[0], tweetclass=self.html_class['hashtag'])
 
-                d = {
+                self.formated_tweet = self.formated_tweet.replace(m[0], link)
+                self.hashtags.append({
                     'text': m[1],
                     'hashtag': m[0],
                     'url': base_url + m[1],
                     'html': link
-                }
-
-                self.formated_tweet = self.formated_tweet.replace(m[0], link)
-                self.hashtags.append(d)
+                })
 
     """
     GETTERS
     """
     def get_all(self):
         return self.tweet
-    
+
     def get_json(self):
         return self.tweet_json
-    
+
     def get_hashtags(self):
         return self.hashtags
-    
+
     def get_users(self):
         return self.users
-    
+
     def get_urls(self):
         return self.urls
 
@@ -144,6 +139,7 @@ class Pytter:
     """
     THE PARSE FUNCTION
     """
+
     def parse(self):
         self.formated_tweet = self.text
         self.parse_hashtags()
