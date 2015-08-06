@@ -49,11 +49,11 @@ class Pytter:
         Set html_class
         :param html_class: dict
         """
-        if html_class.get('user') and html_class.get('url') and html_class.get('hashtag'):
+        if ('user' in html_class) and ('url' in html_class) and ('hashtag' in html_class):
 
-            if (type(html_class.get('user')) is str) and \
-                            type(html_class.get('url')) is str and \
-                            type(html_class.get('hashtag')) is str:
+            if (type(html_class['user']) is str) and \
+                            type(html_class['url']) is str and \
+                            type(html_class['hashtag']) is str:
                 self.html_class = html_class
 
             else:
@@ -143,4 +143,3 @@ class Pytter:
 
     def get_html_classes(self):
         return self.html_class
-

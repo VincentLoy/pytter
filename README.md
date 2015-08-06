@@ -60,8 +60,6 @@
 
 #### You can also set the html/css classes you want to give for each kind of anchor tags
 
-There is two way to do it.
-
 ```python
 >>> from pytter.pytter import Pytter
 
@@ -78,13 +76,6 @@ There is two way to do it.
 >>> # now if you check your html links
 >>> t.get_hashtags()[0].get('html')
 '<a href="https://twitter.com/hashtag/tweet" target="_blank" class="my_hashtag_class">#tweet</a>'
-
->>> # You can also set custom class next your Pytter call
->>> t = Pytter(text)
->>> t.set_html_class(custom_classes)
->>> t.parse()
->>> t.get_html_classes()
-{'hashtag': 'my_hashtag_class', 'url': 'my_url_class', 'user': 'my_user_anchor_class'}
 ```
 
 #### You can get all of this stuff in one big dictionary or JSON
