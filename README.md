@@ -24,15 +24,13 @@
 	{
 	   'url': 'https://twitter.com/pastaws',
 	   'user_formated': 'pastaws',
-	   'html': '<a href="https://twitter.com/pastaws" target="_blank" class="tweet_user">@pastaws</a>'
-	       ,
+	   'html': '<a href="https://twitter.com/pastaws" target="_blank" class="tweet_user">@pastaws</a>',
 	   'user': '@pastaws',
    }, 
    {
 	   'url': 'https://twitter.com/twitter',
 	   'user_formated': 'twitter',
-	   'html': '<a href="https://twitter.com/twitter" target="_blank" class="tweet_user">@twitter</a>'
-	       ,
+	   'html': '<a href="https://twitter.com/twitter" target="_blank" class="tweet_user">@twitter</a>',
 	   'user': '@twitter',
 	}
 ]
@@ -41,7 +39,7 @@
 [
 	{
 		'url': 'http://duckduckgo.com', 
-		'html': '<a href="http://duckduckgo.com" target="_blank" class="tweet_url">http://duckduckgo.com</a>'
+		'html': '<a href="http://duckduckgo.com" target="_blank" class="tweet_url">http://duckduckgo.com</a>',
 	}
 ]
 
@@ -96,8 +94,7 @@ There is two way to do it.
 {
 	'hashtags': [
         {
-            'html': '<a href="https://twitter.com/hashtag/tweet" target="_blank" class="my_hashtag_class">#tweet</a>'
-            ,
+            'html': '<a href="https://twitter.com/hashtag/tweet" target="_blank" class="my_hashtag_class">#tweet</a>',
             'url': 'https://twitter.com/hashtag/tweet',
             'text': 'tweet',
             'hashtag': '#tweet',
@@ -115,8 +112,7 @@ There is two way to do it.
         {
             'url': 'https://twitter.com/myusername',
             'user_formated': 'myusername',
-            'html': '<a href="https://twitter.com/myusername" target="_blank" class="my_user_anchor_class">@myusername</a>'
-            ,
+            'html': '<a href="https://twitter.com/myusername" target="_blank" class="my_user_anchor_class">@myusername</a>',
             'user': '@myusername',
         }
     ],
