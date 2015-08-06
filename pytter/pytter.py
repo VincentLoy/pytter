@@ -19,23 +19,30 @@ HASHTAG_REGEX = '(\B#([á-úÁ-Úä-üÄ-Üa-zA-Z0-9_]+))'
 
 class Pytter:
     def __init__(self, tweet, html_class=None):
-        self.text = tweet
-        self.formated_tweet = None
-        self.length = len(tweet)
-        self.urls = []
-        self.users = []
-        self.hashtags = []
-
-        # contain all informations about the tweet
-        self.tweet = None
-        self.tweet_json = None
-
         if (html_class is None) or (type(html_class) is not dict):
             self.html_class = HTML_CLASSES
         else:
             self.html_class = html_class
 
-        self.parse()
+        self.text = tweet
+        self.formated_tweet = None
+        self.length = len(tweet)
+        self.formated_tweet = self.text
+        self.urls = list(self.parse_url())
+        self.users = list(self.parse_users())
+        self.hashtags = list(self.parse_hashtags())
+
+        self.tweet = {
+            'users': self.users,
+            'urls': self.urls,
+            'hashtags': self.hashtags,
+            'text': self.text,
+            'tweet_length': self.length,
+            'formated': self.formated_tweet,
+            'html_classes': self.html_class
+        }
+
+        self.tweet_json = json.dumps(self.tweet)
 
     def set_html_class(self, html_class):
         """
@@ -57,9 +64,9 @@ class Pytter:
             raise ValueError('Error setting html_class, the dictionnary have required keys : {keys}'
                              .format(keys=required_keys))
 
-    """
-    PARSERS
-    """
+    # ---
+    # PARSERS
+    # ---
 
     def parse_url(self):
         match = re.findall(URL_REGEX, self.text)
@@ -69,11 +76,11 @@ class Pytter:
                 link = '<a href="{url}" target="_blank" class="{tweetclass}">{text}</a>' \
                     .format(url=m[1], text=m[1], tweetclass=self.html_class['url'])
 
-                self.urls.append({
+                self.formated_tweet = self.formated_tweet.replace(m[1], link)
+                yield {
                     'url': m[1],
                     'html': link
-                })
-                self.formated_tweet = self.formated_tweet.replace(m[1], link)
+                }
 
     def parse_users(self):
         match = re.findall(USER_REGEX, self.text)
@@ -85,12 +92,12 @@ class Pytter:
                     .format(base_url=base_url, user_only=m[1], text=m[0], tweetclass=self.html_class['user'])
 
                 self.formated_tweet = self.formated_tweet.replace(m[0], link)
-                self.users.append({
+                yield {
                     'user': m[0],
                     'user_formated': m[1],
                     'url': base_url + m[1],
                     'html': link
-                })
+                }
 
     def parse_hashtags(self):
         match = re.findall(HASHTAG_REGEX, self.text)
@@ -102,16 +109,17 @@ class Pytter:
                     .format(base_url=base_url, hashtag_text=m[1], hashtag=m[0], tweetclass=self.html_class['hashtag'])
 
                 self.formated_tweet = self.formated_tweet.replace(m[0], link)
-                self.hashtags.append({
+                yield {
                     'text': m[1],
                     'hashtag': m[0],
                     'url': base_url + m[1],
                     'html': link
-                })
+                }
 
     """
     GETTERS
     """
+
     def get_all(self):
         return self.tweet
 
@@ -136,24 +144,3 @@ class Pytter:
     def get_html_classes(self):
         return self.html_class
 
-    """
-    THE PARSE FUNCTION
-    """
-
-    def parse(self):
-        self.formated_tweet = self.text
-        self.parse_hashtags()
-        self.parse_users()
-        self.parse_url()
-
-        self.tweet = {
-            'users': self.users,
-            'urls': self.urls,
-            'hashtags': self.hashtags,
-            'text': self.text,
-            'tweet_length': self.length,
-            'formated': self.formated_tweet,
-            'html_classes': self.html_class
-        }
-
-        self.tweet_json = json.dumps(self.tweet)
