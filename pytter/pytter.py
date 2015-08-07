@@ -22,7 +22,7 @@ class Pytter:
         if (html_class is None) or (type(html_class) is not dict):
             self.html_class = HTML_CLASSES
         else:
-            self.html_class = html_class
+            self.html_class = self.set_html_class(html_class)
 
         self.text = tweet
         self.formated_tweet = None
@@ -51,13 +51,11 @@ class Pytter:
         """
         if ('user' in html_class) and ('url' in html_class) and ('hashtag' in html_class):
 
-            if (type(html_class['user']) is str) and \
-                            type(html_class['url']) is str and \
-                            type(html_class['hashtag']) is str:
-                self.html_class = html_class
+            for k, v in html_class.items():
+                if type(v) is not str:
+                    raise ValueError('Only string values allowed for html_class, {} is {}'.format(v, type(v)))
 
-            else:
-                raise ValueError('html_class must contain strings')
+            return html_class
 
         else:
             required_keys = ', '.join(['user', 'url', 'hashtag'])
@@ -67,7 +65,6 @@ class Pytter:
     # ---
     # PARSERS
     # ---
-
     def parse_url(self):
         match = re.findall(URL_REGEX, self.text)
 
