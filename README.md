@@ -79,6 +79,7 @@
 ```
 
 #### You can get all of this stuff in one big dictionary or JSON
+
 ```python
 >>> # t.get_json() will give you the same result in JSON
 >>> t.get_all()
