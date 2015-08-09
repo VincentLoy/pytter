@@ -113,10 +113,6 @@ class Pytter:
                     'html': link
                 }
 
-    """
-    GETTERS
-    """
-
     def get_all(self):
         return self.tweet
 
