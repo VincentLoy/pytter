@@ -49,18 +49,16 @@ class Pytter:
         Set html_class
         :param html_class: dict
         """
-        if ('user' in html_class) and ('url' in html_class) and ('hashtag' in html_class):
-
-            for k, v in html_class.items():
-                if type(v) is not str:
-                    raise ValueError('Only string values allowed for html_class, {} is {}'.format(v, type(v)))
-
-            return html_class
-
-        else:
+        if ('user' not in html_class) and ('url' not in html_class) and ('hashtag' not in html_class):
             required_keys = ', '.join(['user', 'url', 'hashtag'])
             raise ValueError('Error setting html_class, the dictionnary have required keys : {keys}'
                              .format(keys=required_keys))
+
+        for k, v in html_class.items():
+            if type(v) is not str:
+                raise ValueError('Only string values allowed for html_class, {} is {}'.format(v, type(v)))
+
+        return html_class
 
     # ---
     # PARSERS
@@ -68,50 +66,53 @@ class Pytter:
     def parse_url(self):
         match = re.findall(URL_REGEX, self.text)
 
-        if match:
-            for m in match:
-                link = '<a href="{url}" target="_blank" class="{tweetclass}">{text}</a>' \
-                    .format(url=m[1], text=m[1], tweetclass=self.html_class['url'])
+        if not match:
+            return
+        for m in match:
+            link = '<a href="{url}" target="_blank" class="{tweetclass}">{text}</a>' \
+                .format(url=m[1], text=m[1], tweetclass=self.html_class['url'])
 
-                self.formated_tweet = self.formated_tweet.replace(m[1], link)
-                yield {
-                    'url': m[1],
-                    'html': link
-                }
+            self.formated_tweet = self.formated_tweet.replace(m[1], link)
+            yield {
+                'url': m[1],
+                'html': link
+            }
 
     def parse_users(self):
         match = re.findall(USER_REGEX, self.text)
 
-        if match:
-            for m in match:
-                base_url = 'https://twitter.com/'
-                link = '<a href="{base_url}{user_only}" target="_blank" class="{tweetclass}">{text}</a>' \
-                    .format(base_url=base_url, user_only=m[1], text=m[0], tweetclass=self.html_class['user'])
+        if not match:
+            return
+        for m in match:
+            base_url = 'https://twitter.com/'
+            link = '<a href="{base_url}{user_only}" target="_blank" class="{tweetclass}">{text}</a>' \
+                .format(base_url=base_url, user_only=m[1], text=m[0], tweetclass=self.html_class['user'])
 
-                self.formated_tweet = self.formated_tweet.replace(m[0], link)
-                yield {
-                    'user': m[0],
-                    'user_formated': m[1],
-                    'url': base_url + m[1],
-                    'html': link
-                }
+            self.formated_tweet = self.formated_tweet.replace(m[0], link)
+            yield {
+                'user': m[0],
+                'user_formated': m[1],
+                'url': base_url + m[1],
+                'html': link
+            }
 
     def parse_hashtags(self):
         match = re.findall(HASHTAG_REGEX, self.text)
 
-        if match:
-            for m in match:
-                base_url = 'https://twitter.com/hashtag/'
-                link = '<a href="{base_url}{hashtag_text}" target="_blank" class="{tweetclass}">{hashtag}</a>' \
-                    .format(base_url=base_url, hashtag_text=m[1], hashtag=m[0], tweetclass=self.html_class['hashtag'])
+        if not match:
+            return
+        for m in match:
+            base_url = 'https://twitter.com/hashtag/'
+            link = '<a href="{base_url}{hashtag_text}" target="_blank" class="{tweetclass}">{hashtag}</a>' \
+                .format(base_url=base_url, hashtag_text=m[1], hashtag=m[0], tweetclass=self.html_class['hashtag'])
 
-                self.formated_tweet = self.formated_tweet.replace(m[0], link)
-                yield {
-                    'text': m[1],
-                    'hashtag': m[0],
-                    'url': base_url + m[1],
-                    'html': link
-                }
+            self.formated_tweet = self.formated_tweet.replace(m[0], link)
+            yield {
+                'text': m[1],
+                'hashtag': m[0],
+                'url': base_url + m[1],
+                'html': link
+            }
 
     def get_all(self):
         return self.tweet
